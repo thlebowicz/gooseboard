@@ -1,6 +1,4 @@
-Roasted
+roasted
 =======
 
-:^)
-
-Guess we're in a pickle.
+softdev (hubert, lawrence, thomas)

@@ -1,0 +1,37 @@
+<!DOCTYPE html> 
+<html>
+<head>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"> 
+  <link rel="stylesheet" href="static/home.css">
+</head>
+  <h1>
+    <center>boards</center>
+  </h1>
+  {% if sess['username'] %}
+  Currently logged in as: {{sess['username']}}<br>
+  {% else %}
+  Not logged in.
+  {% endif %}
+  {% if post %}
+  {% if errorlist %}
+  an error occurred:<br>
+  <ul>
+  {% for error in errorlist %}
+  <li>{{error}}</li>
+  {% endfor %}
+  </ul>
+  {% else %}
+  post successful<br>
+  {% endif %}
+  {% endif %}
+  <form action="boards" method="POST">
+    Create new board:
+    <input name="title" type="text" placeholder="Title"><br>
+    <button type="submit">Post</button><br>
+  </form>
+  {% for b in boards %}
+  <h2><a href="board/{{b['title']}}">{{b['title']}}</a> - {% if b['owner'] %}{{b['owner']}}{% else %}Anonymous{% endif %}</h2>
+  {{b['body']}}
+  {% endfor %}
+</body> 
+</html>
