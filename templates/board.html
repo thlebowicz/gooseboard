@@ -1,0 +1,39 @@
+<!DOCTYPE html> 
+<html>
+<head>
+  <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"> 
+  <link rel="stylesheet" href="static/home.css">
+</head>
+<body>
+  {% if sess['username'] %}
+  Currently logged in as: {{sess['username']}}<br>
+  {% else %}
+  Not logged in.
+  {% endif %}
+  {% if post %}
+  {% if errorlist %}
+  an error occurred:<br>
+  <ul>
+  {% for error in errorlist %}
+  <li>{{error}}</li>
+  {% endfor %}
+  </ul>
+  {% else %}
+  successful
+  {% endif %}
+  {% endif %}
+  <hr>
+  <h1>
+    {{board['title']}} - {% if board['author'] %}{{board['author']}}{% else %}Anonymous{% endif %}
+  </h1>
+  <hr>
+  <table border="1" padding="0"><tr><td>
+    <canvas id="draw" width="640" height="480"></canvas>
+  </td></tr></table>
+  <div id="debug">
+  </div>
+  <hr>
+  <a href = "/boards">Return to board list</a>
+  <script src="/static/whiteboard.js"></script>
+</body> 
+</html>
