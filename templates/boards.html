@@ -27,7 +27,7 @@
   <form action="boards" method="POST">
     Create new board:
     <input name="title" type="text" placeholder="Title"><br>
-    <button type="submit">Post</button><br>
+    <button type="submit">Create</button><br>
   </form>
   {% for b in boards %}
   <h2><a href="board/{{b['title']}}">{{b['title']}}</a> - {% if b['owner'] %}{{b['owner']}}{% else %}Anonymous{% endif %}</h2>

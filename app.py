@@ -1,4 +1,4 @@
-from flask import Flask,render_template,request,session,redirect,url_for
+from flask import Flask,render_template,request,session,redirect,url_for,jsonify,json
 from pymongo import MongoClient
 from functools import wraps
 
@@ -8,6 +8,10 @@ client = MongoClient()
 db = client['cookedgoose']
 acctdb = db['accounts']
 boarddb = db['boards']
+
+def currentuser():
+    if loggedin(): return session["username"]
+    else: return "Anonymous"
 
 def loggedin():
     return "username" in session
@@ -26,6 +30,31 @@ def requirelogout(f):
         else: return redirect("/")
     return ff
 
+@app.route("/ajax/test")
+def ajax_test():
+    return jsonify(x=167)
+    
+@app.route("/ajax/chat/<board>",methods=['GET','POST'])
+def ajax_chat(board):
+    curBoard = boarddb.find_one({"title":board.replace("%20"," ")})
+    if request.method=="POST":
+        pdat = json.loads(request.data)
+        print pdat
+        newChat = {"author":currentuser(),
+                   "content":pdat["content"]}
+        print newChat
+        if "chat" not in curBoard:
+            curBoard["chat"] = [newChat]
+        else:
+            curBoard["chat"].append(newChat)
+        if len(curBoard["chat"]) > 200: #yeah okay, ew
+            curBoard["chat"] = curBoard["chat"][len(curBoard["chat"])-200:]
+        boarddb.save(curBoard)
+    r = ""
+    for msg in curBoard["chat"]:
+        r+="&lt;"+msg["author"]+"&gt; "+msg["content"]+"<br>\n"
+    return jsonify(content=r)
+    
 @app.route("/")
 @app.route("/home",methods=['GET','POST'])
 def home_html():
@@ -85,8 +114,6 @@ def register_html():
         
         if newpass!=newpass2:
             error.append("mismatched password")
-        if newuser=="jamal":
-            error.append("you are jamal")
         if newuser=="Anonymous":
             error.append("no")
         if acctdb.find_one({"login":newuser}):
@@ -117,7 +144,10 @@ def boards_html():
         if len(errors)>0:
             success = False
         else:
-            newboard = {"title":newtitle,"owner":session["username"],"id":newid}
+            newboard = {"title":newtitle,
+                        "owner":session["username"],
+                        "id":newid,
+                        "chat":[]}
             boarddb.insert(newboard)
     boards = boarddb.find()
     return render_template("boards.html",

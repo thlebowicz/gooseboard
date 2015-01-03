@@ -2,11 +2,11 @@
 <html>
 <head>
   <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"> 
-  <link rel="stylesheet" href="static/home.css">
+  <link rel="stylesheet" href="/static/board.css">
 </head>
 <body>
   {% if sess['username'] %}
-  Currently logged in as: {{sess['username']}}<br>
+  Currently logged in as: <span id="loguser">{{sess['username']}}</span><br>
   {% else %}
   Not logged in.
   {% endif %}
@@ -24,16 +24,32 @@
   {% endif %}
   <hr>
   <h1>
-    {{board['title']}} - {% if board['author'] %}{{board['author']}}{% else %}Anonymous{% endif %}
+    {{board['title']}} - {% if board['owner'] %}{{board['owner']}}{% else %}Anonymous{% endif %}
   </h1>
   <hr>
-  <table border="1" padding="0"><tr><td>
+  <table border="1" padding="0"><tr>
+  <td>
     <canvas id="draw" width="640" height="480"></canvas>
-  </td></tr></table>
-  <div id="debug">
-  </div>
+  </td>
+  <td>
+    <div id="chatcontainer">
+      <div id="chatmain">
+      </div>
+      <div id="chatinput">
+        <button id="chatsendbutton">Send</button>
+        <span id="chatinputspan">
+          <input id="chattext" type="text"></input>
+        </span>
+      </div>
+    </div>
+  </td>
+  </tr></table>
+  DEBUGOUT: <span id="debug"></span>
   <hr>
   <a href = "/boards">Return to board list</a>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="{{
+  url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
   <script src="/static/whiteboard.js"></script>
 </body> 
 </html>
