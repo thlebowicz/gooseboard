@@ -1,0 +1,17 @@
+#login-header{
+    font-size: 36px;
+    height: 70px;
+}
+
+#error-display{
+    width: 400px;
+    color: red;
+    margin: 0 auto;
+}
+
+#hidebutton{
+    background: transparent;
+    border: none !important;
+    font-size:0;
+}
+

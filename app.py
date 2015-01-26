@@ -80,10 +80,10 @@ def login_html():
         logpass = request.form["password"]
         acct = acctdb.find_one({"login":loguser})
         if not acct:
-            error.append("no user with that name")
+            error.append("No user with that name")
         else:
             if acct["password"]!=logpass:
-                error.append("wrong username or password")
+                error.append("Wrong username or password.")
         if len(error)>0:
             success = False
         else:
