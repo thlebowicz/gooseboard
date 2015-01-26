@@ -1,6 +1,7 @@
 from flask import Flask,render_template,request,session,redirect,url_for,jsonify,json
 from pymongo import MongoClient
 from functools import wraps
+import time
 
 app = Flask(__name__)
 
@@ -53,8 +54,38 @@ def ajax_chat(board):
     r = ""
     for msg in curBoard["chat"]:
         r+="&lt;"+msg["author"]+"&gt; "+msg["content"]+"<br>\n"
+    return jsonify(content=r)    
+
+@app.route("/ajax/canvasstroke/<board>",methods=['GET','POST'])
+def ajax_canvasstroke(board):
+    curBoard = boarddb.find_one({"title":board.replace("%20"," ")})
+    dat = json.loads(request.data)
+    newStroke = {"author":currentuser(),
+                 "content":dat["content"],
+                 "time":int(time.time())}
+    if "canvasstrokes" not in curBoard:
+        curBoard["canvasstrokes"] = [newStroke]
+    else:
+        curBoard["canvasstrokes"].append(newStroke)
+        boarddb.save(curBoard)
+    return "yolo"
+
+@app.route("/ajax/canvas/<board>/<last>",methods=['GET','POST'])
+def ajax_canvasget(board,last):
+    curBoard = boarddb.find_one({"title":board.replace("%20"," ")})
+    last = int(last)
+    r = curBoard["canvasstrokes"]
+    r = [x for x in r if x["time"]>=last]
     return jsonify(content=r)
     
+@app.route("/ajax/canvasfix/<board>",methods=['GET','POST'])
+def ajax_canvasfix(board):
+    curBoard = boarddb.find_one({"title":board.replace("%20"," ")})
+    for stroke in curBoard["canvasstrokes"]:
+        stroke["time"] = 0
+    boarddb.save(curBoard)
+    return "yolo"
+
 @app.route("/")
 @app.route("/home",methods=['GET','POST'])
 def home_html():
@@ -147,7 +178,10 @@ def boards_html():
             newboard = {"title":newtitle,
                         "owner":session["username"],
                         "id":newid,
-                        "chat":[]}
+                        "chat":[],
+                        "canvasstrokes":[],
+                        "canvasimage":0,
+                        "canvasimagetime":0}
             boarddb.insert(newboard)
     boards = boarddb.find()
     return render_template("boards.html",
