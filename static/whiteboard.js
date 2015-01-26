@@ -209,7 +209,7 @@ function chatsendclick(e) {
     chattext.value = "";
 }
 
-$("#full").spectrum({
+/*$("#full").spectrum({
     color: "#ECC",
     showInput: true,
     className: "full-spectrum",
@@ -250,7 +250,7 @@ $("#full").spectrum({
         "rgb(91, 15, 0)", "rgb(102, 0, 0)", "rgb(120, 63, 4)", "rgb(127, 96, 0)", "rgb(39, 78, 19)", 
         "rgb(12, 52, 61)", "rgb(28, 69, 135)", "rgb(7, 55, 99)", "rgb(32, 18, 77)", "rgb(76, 17, 48)"]
     ]
-});
+});*/   
 
 function start() {
     //saveboard.addEventListener("click", saveBoardToDB);
