@@ -1,0 +1,23 @@
+#title{
+font-size: 36px;
+}
+
+#main-options{
+margin-left: 33%;
+margin-top: 0%;
+margin-bottom: 15px;
+}
+
+#header{
+margin-bottom: 10px;
+height: 70px;
+}
+
+.thumbnail{
+height: 250px;
+width: 250px;
+border: 2px solid;
+border-radius: 20px;
+margin-left: 20%;
+margin-bottom: 5px;
+}
