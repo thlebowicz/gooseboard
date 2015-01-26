@@ -8,24 +8,29 @@
   <!-- Header -->
   <div class="pure-g" id="header">
     <div class="pure-u-1-1" id="title">
-      <p><center>WhiteBoard</center></p>
+      <p><center>WhiteBoard{% if session|length > 0 %}: {{ session["username"] }} {% endif %}
+      </center></p>
     </div>
   </div>
-  <div class="pure-menu pure-menu-open pure-menu-horizontal" id="main-options">
-    <ul>
-      <li><a href="/login">Login</a></li>
-      <li><a href="/register">Register</a></li>
-      <li><a href="/search">Search Boards</a></li>
-      <li><a href="/top">Top Boards</a></li>
-    </ul>
+  <div class="pure-g" id="header">
+    <div class="pure-u-1-3">
+      <div class="pure-menu pure-menu-open pure-menu-horizontal" id="main-options">
+	<ul>
+	  {% if session|length == 0 %}
+	  <li><a href="{{ url_for('login_html') }}">Login</a></li>
+	  {% endif %}
+	  {% if session|length == 0 %}
+	  <li><a href="/register">Register</a></li>
+	  {% endif %}
+	  <li><a href="/search">Search Boards</a></li>
+	  <li><a href="/top">Top Boards</a></li>
+	  {% if session|length > 0 %}
+	  <li><a href="/logout">Logout</a></li>
+	  {% endif %}
+	</ul>
+      </div>
+    </div>
   </div>
-
-  <!--- Options -->
-
-
-
-
-
 
   <!--- Preview Boards -->
   <div class="pure-g">

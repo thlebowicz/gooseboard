@@ -3,6 +3,7 @@
 <head>
   <link rel="stylesheet" href="http://yui.yahooapis.com/pure/0.5.0/pure-min.css"> 
   <link rel="stylesheet" href="/static/board.css">
+  <link rel="stylesheet" href='spectrum.css' />
 </head>
 <body>
   {% if sess['username'] %}
@@ -25,6 +26,8 @@
   <hr>
   <h1>
     {{board['title']}} - {% if board['owner'] %}{{board['owner']}}{% else %}Anonymous{% endif %}
+    <button id="saveboardbutton">Save Board</button>
+    <input type='text' id="full"/>
   </h1>
   <hr>
   <table border="1" padding="0"><tr>
@@ -51,5 +54,6 @@
 <script>window.jQuery || document.write('<script src="{{
   url_for('static', filename='jquery.js') }}">\x3C/script>')</script>
   <script src="/static/whiteboard.js"></script>
+  <script src="spectrum.js"></script>
 </body> 
 </html>
