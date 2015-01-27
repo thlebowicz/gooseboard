@@ -9,6 +9,7 @@ client = MongoClient()
 db = client['cookedgoose']
 acctdb = db['accounts']
 boarddb = db['boards']
+app.secret_key = "insane"
 
 def currentuser():
     if loggedin(): return session["username"]
@@ -235,5 +236,4 @@ def settings_html():
 
 if __name__ == "__main__":
     app.debug = True
-    app.secret_key = "insane"
     app.run()
